@@ -1,0 +1,30 @@
+<link rel='import' href='../bower_components/core-ajax/core-ajax.html'>
+<link rel='import' href='../bower_components/paper-button/paper-button.html'>
+<link rel='import' href='../bower_components/paper-input/paper-input.html'>
+
+
+<polymer-element name='innovbox-main'>
+  <template>
+    <paper-input id='ideaText' label='Ecrivez votre id&eacute;e'></paper-input>
+    <core-ajax
+      id='postIdeaAjax'
+      url='/api/ideas'
+      method='POST'
+      body='text : {{ideaText}}'
+      handleAs='json'
+      on-core-response='onIdeaPostedResponse'>
+    </core-ajax>
+    <paper-button colored on-click="{{goClicked}}">Envoyer !</paper-button>
+  </template>
+  <script>
+    Polymer('innovbox-main', {
+        ideaText : '',
+        goClicked: function(e) {
+          this.ideaText = this.$.ideaText.value ;
+          this.$.postIdeaAjax.go() ;
+        },
+        onIdeaPostedResponse : function(e) {
+        }
+      }) ;
+   </script>
+</polymer-element>

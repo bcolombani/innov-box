@@ -1,0 +1,26 @@
+{
+  "name": "innov-box-front",
+  "version": "0.0.0",
+  "homepage": "https://github.com/bcolombani/innov-box",
+  "authors": [
+    "benoit colombani <benoit.colombani@gmail.com>"
+  ],
+  "description": "Front end for innox-box",
+  "main": "index.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "core-ajax": "polymer/core-ajax#~0.5.6",
+    "paper-input": "polymer/paper-input#~0.5.6",
+    "paper-button": "polymer/paper-button#~0.5.6"
+  },
+  "resolutions": {
+    "polymer": "^0.5"
+  }
+}
