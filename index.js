@@ -1,15 +1,7 @@
 var logger = require('morgan') ;
 var fs = require('fs') ;
 var enableDestroy = require('server-destroy') ;
-var auth = require('authorizer') ;
 var express = require('express') ;
-
-
-var routes = [
-    {method : 'post',     path : '/api/ideas',    check : auth.assertAlwaysOpen},
-    {method : '*',        path : '/api/*',         check : auth.assertAlwaysClosed},
-    {method : '*',        path : '*',             check : auth.assertAlwaysOpen}
-]; 
 
 var BoxServer = function(port, filePath) {
   this.port = port ;
@@ -18,10 +10,17 @@ var BoxServer = function(port, filePath) {
   this.server = jsonServer.create() ;
   var router = jsonServer.router(filePath) ;
 
+  this.server.use('/api', function(req, res, next) { 
+    if(req.method === 'POST' && req.originalUrl === '/api/ideas') {
+      next() ;
+    } else {
+      res.send('{°_°}') ;
+    }
+  }) ;
+
   this.server.use('/api', router) ;
   this.server.use(logger('combined', {stream : fs.createWriteStream(__dirname + '/access.log', {flags: 'a'})})) ;
   this.server.use(express.static(__dirname + '/public')) ;
-  this.server.use(auth(routes)) ;
 }
 
 BoxServer.prototype.start = function() {
