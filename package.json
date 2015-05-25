@@ -1,0 +1,40 @@
+{
+  "name": "innovbox",
+  "version": "0.5.0",
+  "description": "KISS virtual idea box for corporate innovation suggestions",
+  "author": {
+    "name": "bcolombani",
+    "email": "bcolombani@sii.fr"
+  },
+  "repository": "bcolombani/innov-box",
+  "license": "MIT",
+  "main": "index.js",
+  "bin": "innov-box.js",
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "innovbox",
+    ""
+  ],
+  "dependencies": {
+    "authorizer": "0.0.2",
+    "express": "^4.12.4",
+    "json-server": "^0.7.9",
+    "morgan": "^1.5.3",
+    "server-destroy": "^1.0.1"
+  },
+  "devDependencies": {
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-contrib-nodeunit": "^0.4.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-cli": "^1.12.0",
+    "jshint-stylish": "^1.0.1",
+    "load-grunt-tasks": "^3.1.0",
+    "time-grunt": "^1.1.0"
+  },
+  "scripts": {
+    "test": "grunt"
+  }
+}
