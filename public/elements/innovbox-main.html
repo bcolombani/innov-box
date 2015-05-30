@@ -1,20 +1,54 @@
 <link rel='import' href='../bower_components/iron-ajax/iron-ajax.html'>
-<link rel='import' href='../bower_components/paper-button/paper-button.html'>
-<link rel='import' href='../bower_components/paper-input/paper-input.html'>
-
+<link rel='import' href='../bower_components/paper-fab/paper-fab.html'>
+<link rel='import' href='../bower_components/paper-input/paper-textarea.html'>
+<link rel='import' href='../bower_components/paper-material/paper-material.html'>
+<link rel='import' href='../bower_components/iron-icons/iron-icons.html'>
+<link rel='import' href='../bower_components/paper-dialog/paper-dialog.html'>
+<link rel="import" href='../bower_components/neon-animation/animations/scale-up-animation.html'>
+<link rel="import" href='../bower_components/neon-animation/animations/fade-out-animation.html'>
 
 <dom-module id='innovbox-main'>
+  <style>
+    :host {
+    }
+    paper-fab {
+      position : absolute ;
+      top : -32px ;
+      right : 16px ; 
+    }
+    paper-material {
+      height : 200px ;
+      padding-left : 16px ;
+      padding-right : 16px ;
+    }
+  </style>
   <template>
-    <paper-input id='ideaText' label='Ecrivez votre id&eacute;e'></paper-input>
+    <div layout vertical>
+      <paper-material elevation='2'>
+        <paper-textarea id='ideaText' label='Ecrivez votre id&eacute;e'></paper-textarea>
+      </paper-material>
+      <div layout horizontal end end-jusitied fit style='position : relative;'>
+        <paper-fab icon='send' on-click='goClicked'></paper-fab>
+      </div>
+    </div>
     <iron-ajax
       id='postIdeaAjax'
       url='/api/ideas'
       method='POST'
       body='{{ajaxBody}}'
       handleAs='json'
-      on-core-response='onIdeaPostedResponse'>
+      on-response='onIdeaPostedResponse'>
     </iron-ajax>
-    <paper-button colored on-click="goClicked">Envoyer !</paper-button>
+<paper-dialog entry-animation="scale-up-animation"
+              exit-animation="fade-out-animation" id="dialog" >
+  <h2>Bien re&ccedil;u !</h2>
+  <paper-dialog-scrollable>
+    Votre id&eacute;e a bien &eacute;t&eacute; envoy&eacute;e
+  </paper-dialog-scrollable>
+  <div class="buttons">
+    <paper-button dialog-confirm>Poster une autre id&eacute;e</paper-button>
+  </div>
+</paper-dialog>
   </template>
 </dom-module>
 <script>
@@ -28,6 +62,8 @@
       this.$.postIdeaAjax.generateRequest() ;
     },
     onIdeaPostedResponse : function(e) {
+      this.$.ideaText.value = '' ;
+      this.$.dialog.open() ;
     }
   }) ;
 </script>
