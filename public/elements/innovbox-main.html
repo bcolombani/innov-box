@@ -10,7 +10,7 @@
       id='postIdeaAjax'
       url='/api/ideas'
       method='POST'
-      body='text : {{ideaText}}'
+      body='text={{ideaText}}'
       handleAs='json'
       on-core-response='onIdeaPostedResponse'>
     </core-ajax>
