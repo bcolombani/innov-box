@@ -1,0 +1,24 @@
+<script src='../bower_components/socket.io-client/socket.io.js'></script>
+
+<dom-module id='live-image'>
+  <template>
+    <img src='{{imageData}}'></src>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is : 'live-image',
+    properties : {
+      url : String,
+      imageData : String,
+      eventName : String
+    },
+    attached : function() {
+      this.socket = io(this.url) ;
+      this.socket.on(this.eventName, function(from, data) {
+        this.imageData = data ;
+      }) ;
+    }
+  }) ;
+</script>

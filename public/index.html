@@ -8,6 +8,7 @@
     <link rel='import' href='bower_components/paper-styles/paper-styles.html'>
     <link rel='import' href='bower_components/paper-header-panel/paper-header-panel.html'>
     <link rel='import' href='elements/innovbox-main.html'>
+    <link rel='import' href='elements/live-image.html'>
     <style is='custom-style'>
 
       body {
@@ -44,10 +45,10 @@
     <paper-header-panel mode='seam' class='blue'>
       <div class='paper-header'>Innov'Box</div>
     </paper-header-panel>
-      <div class='content' layout fit>
-        <innovbox-main></innovbox-main>
-      </div>
-    <video src='/box-view.mp4' controls preload='none' autoplay type='video/mp4'></video>
+    <div class='content' layout fit>
+      <innovbox-main></innovbox-main>
+    </div>
+    <live-image url='http://localhost:1558/' event-name='box-view'></live-image>
   </body>
 </html>
 

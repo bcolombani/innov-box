@@ -39,16 +39,15 @@
       handleAs='json'
       on-response='onIdeaPostedResponse'>
     </iron-ajax>
-<paper-dialog entry-animation="scale-up-animation"
-              exit-animation="fade-out-animation" id="dialog" >
-  <h2>Bien re&ccedil;u !</h2>
-  <paper-dialog-scrollable>
-    Votre id&eacute;e a bien &eacute;t&eacute; envoy&eacute;e
-  </paper-dialog-scrollable>
-  <div class="buttons">
-    <paper-button dialog-confirm>Poster une autre id&eacute;e</paper-button>
-  </div>
-</paper-dialog>
+    <paper-dialog entry-animation="scale-up-animation" exit-animation="fade-out-animation" id="dialog" >
+      <h2>Bien re&ccedil;u !</h2>
+      <paper-dialog-scrollable>
+        Votre id&eacute;e a bien &eacute;t&eacute; envoy&eacute;e
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-confirm>Poster une autre id&eacute;e</paper-button>
+      </div>
+    </paper-dialog>
   </template>
 </dom-module>
 <script>
