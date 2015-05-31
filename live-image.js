@@ -18,18 +18,20 @@ LiveImage.prototype = {
       var path = this.images[imageIndex].path ;
       var name = this.images[imageIndex].name ;
       fs.watch(path, function(event, filename) {
-        fs.readFile(path, function(err, data) {
-          if(!err) {
-            var encodedData = new Buffer(data).toString('base64') ;
-            thisServer.emit(name, encodedData) ;
-          }
-        }) ;
+        if(event === 'change') {
+          fs.readFile(path, function(err, data) {
+            if(!err) {
+              var encodedData = new Buffer(data).toString('base64') ;
+              thisServer.emit(name, 'data:image/jpg;base64,' + encodedData) ;
+            }
+          }) ;
+        }
       }) ;  
     }
   },
   stop : function() {
     this.socket.close() ; // close all connection with 'destroy'
-    this.socket.server.close() ;
+    this.server.close() ;
   }
 } ;
 

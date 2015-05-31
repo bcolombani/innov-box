@@ -16,8 +16,9 @@
     },
     attached : function() {
       this.socket = io(this.url) ;
-      this.socket.on(this.eventName, function(from, data) {
-        this.imageData = data ;
+      var thisLiveImage = this ;
+      this.socket.on(this.eventName, function(data) {
+        thisLiveImage.imageData = data ;
       }) ;
     }
   }) ;

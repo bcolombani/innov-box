@@ -12,8 +12,7 @@ module.exports = function(socket) {
   socket['close'] = function() {
     var sockets = thisDestroy.sockets.slice(0) ; // clone
     sockets.forEach(function(socket) {
-      socket.close() ;
-      socket.destroy();
+      socket.disconnect();
     });
     return initialClose.apply(socket, arguments) ;
   }
