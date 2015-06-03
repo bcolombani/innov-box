@@ -1,17 +1,9 @@
-var server = require('./index').create(1557, 'db.json') ;
-var serverVideo = require('./live-image').create(1558, [ { path : 'image.jpg', name : 'box-view' } ]) ;
+if(process.argv.length === 7) {
+	require("./index")(process.argv[2], process.argv[3], process.argv[4], process.argv[5], process.argv[6]) ;	
+} else {
+	console.log("Syntax : node innov-box <server-port> <video-socket-port> <db-file> <live-image-file> <cups-printer-name>") ;
+}
 
-console.log("Starting innov-box...") ;
-server.start() ;
-serverVideo.start() ;
-console.log("Started\n") ; 
 
-process.on('SIGINT', function () {
-  setTimeout(function() { console.log("Could not stop within ten seconds, terminating.") ; process.exit(-1) ; }, 10000 ) ;
-  console.log("Stopping innov-box...") ;
-  serverVideo.stop() ;
-  server.stop(function () {
-    console.log("Stopped. Bye !") ;
-    process.exit(0);
-  });
-});
+
+

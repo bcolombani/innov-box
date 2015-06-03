@@ -1,39 +1,33 @@
-var logger = require('morgan') ;
-var fs = require('fs') ;
-var enableDestroy = require('server-destroy') ;
-var express = require('express') ;
+module.exports = function(serverPort, socketPort, dbPath, cameraPath, printerName) {
+  var boxServer = require('./box-server').create(serverPort, 'db.json', { socketPort : socketPort }) ;
+  var videoServer = require('./live-image').create(socketPort, [ { path : cameraPath, name : 'box-view' } ]) ;
+  var printer = require('printer') ;
+  var template = "Nouvelle idee : idea\n" ;
 
-var BoxServer = function(port, filePath) {
-  this.port = port ;
-
-  var jsonServer = require('json-server') ;
-  this.server = jsonServer.create() ;
-  var router = jsonServer.router(filePath) ;
-
-  this.server.use('/api', function(req, res, next) { 
-    if(req.method === 'POST' && req.originalUrl === '/api/ideas') {
-      next() ;
-    } else {
-      res.send('{°_°}') ;
-    }
+  boxServer.onNewIdea(function(idea) {
+    printer.printDirect({
+      data:template.replace(/idea/, idea),
+      printer:printerName,
+      type: "RAW",
+      success:function(){
+        console.log("printed new idea : "+ idea);
+      }, 
+      error:function(err){console.log(err);}
+    });
   }) ;
 
-  this.server.use('/api', router) ;
-  this.server.use(logger('combined', {stream : fs.createWriteStream(__dirname + '/access.log', {flags: 'a'})})) ;
-  this.server.use(express.static(__dirname + '/public')) ;
-}
+  console.log("Starting innov-box...") ;
+  boxServer.start() ;
+  videoServer.start() ;
+  console.log("Started\n") ; 
 
-BoxServer.prototype.start = function() {
-  this.connection = this.server.listen(this.port) ; 
-  enableDestroy(this.connection) ;
-}
-
-BoxServer.prototype.stop = function(handler) {
-  this.connection.destroy() ; 
-  this.connection.close(handler) ;
-}
-
-exports.create = function(port, file) {
-  return new BoxServer(port, file) ;
-}
-
+  process.on('SIGINT', function () {
+    setTimeout(function() { console.log("Could not stop within ten seconds, terminating.") ; process.exit(-1) ; }, 10000 ) ;
+    console.log("Stopping innov-box...") ;
+    videoServer.stop() ;
+    boxServer.stop(function () {
+      console.log("Stopped. Bye !") ;
+      process.exit(0);
+    });
+  });
+};

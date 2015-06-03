@@ -12,10 +12,11 @@
     properties : {
       url : String,
       imageData : String,
-      eventName : String
+      eventName : String,
+      port : Number
     },
     attached : function() {
-      this.socket = io(this.url) ;
+      this.socket = io(location.protocol + '//' + window.location.hostname + ':' + this.port + this.url) ;
       var thisLiveImage = this ;
       this.socket.on(this.eventName, function(data) {
         thisLiveImage.imageData = data ;

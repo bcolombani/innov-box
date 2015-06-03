@@ -1,0 +1,36 @@
+<link rel='import' href='../bower_components/iron-ajax/iron-ajax.html'>
+<link rel='import' href='ideacard-form.html'>
+<link rel='import' href='live-image.html'>
+
+<dom-module id='innov-box'>
+  <template>
+    <div class='content' layout fit>
+      <ideacard-form></ideacard-form>
+    </div>
+    <iron-ajax
+      id='paramAjax'
+      url="/params"
+      method="GET"
+      handle-as="json"
+      on-response="onParamsReceived">
+    </iron-ajax>
+  </template>
+</dom-module>
+<script>
+  Polymer( {
+    is : 'innov-box',
+    properties : {
+
+    },
+    attached : function() {
+      this.$.paramAjax.generateRequest() ;
+    },
+    onParamsReceived : function(event) {
+      liveImage = document.createElement("live-image") ;
+      liveImage.setAttribute("url", "/") ;
+      liveImage.setAttribute("port", event.detail.response.socketPort) ; 
+      liveImage.setAttribute("event-name", "box-view") ;
+      this.$.paramAjax.parentNode.appendChild(liveImage) ;
+    }
+  }) ;
+</script>
