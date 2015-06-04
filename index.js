@@ -2,18 +2,22 @@ module.exports = function(serverPort, socketPort, dbPath, cameraPath, printerNam
   var boxServer = require('./box-server').create(serverPort, 'db.json', { socketPort : socketPort }) ;
   var videoServer = require('./live-image').create(socketPort, [ { path : cameraPath, name : 'box-view' } ]) ;
   var printer = require('printer') ;
-  var template = "Nouvelle idee : idea\n" ;
+  var fs = require('fs') ;
 
   boxServer.onNewIdea(function(idea) {
-    printer.printDirect({
-      data:template.replace(/idea/, idea),
-      printer:printerName,
-      type: "RAW",
-      success:function(){
-        console.log("printed new idea : "+ idea);
-      }, 
-      error:function(err){console.log(err);}
-    });
+    fs.readFile('template.zpl', function read(err, data) {
+      if (!err) {
+        printer.printDirect({
+          data:new Buffer(data).toString().replace(/\{\{idea\}\}/, idea),
+          printer:printerName,
+          type: "RAW",
+          success:function(){
+            console.log("printed new idea : "+ idea);
+          }, 
+          error:function(err){console.log(err);}
+        });
+      }
+    }) ;
   }) ;
 
   console.log("Starting innov-box...") ;

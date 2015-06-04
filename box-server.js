@@ -11,6 +11,8 @@ var BoxServer = function(port, filePath, publicParams) {
   this.server = jsonServer.create() ;
   var router = jsonServer.router(filePath) ;
 
+  this.server.use(require('body-parser').urlencoded({extended : true})) ;
+
   // Adds a service for the front to fetch parameters whatever they are
   this.server.get('/params', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
@@ -21,7 +23,7 @@ var BoxServer = function(port, filePath, publicParams) {
   var thisServer = this ;
   this.server.use('/api', function(req, res, next) { 
     if(req.method === 'POST' && req.originalUrl === '/api/ideas') {
-      thisServer.newIdeaCallback("TODO") ;
+      thisServer.newIdeaCallback(req.body.text) ;
       next() ;
     } else {
       res.send('{°_°}') ;
