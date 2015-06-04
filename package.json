@@ -23,6 +23,7 @@
     "json-server": "^0.7.9",
     "morgan": "^1.5.3",
     "printer": "^0.1.1",
+    "raspicam": "^0.2.13",
     "server-destroy": "^1.0.1",
     "socket.io": "^1.3.5"
   },

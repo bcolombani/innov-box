@@ -1,33 +1,31 @@
 module.exports = function(serverPort, socketPort, dbPath, cameraPath, printerName) {
   var boxServer = require('./box-server').create(serverPort, 'db.json', { socketPort : socketPort }) ;
   var videoServer = require('./live-image').create(socketPort, [ { path : cameraPath, name : 'box-view' } ]) ;
-  var printer = require('printer') ;
-  var fs = require('fs') ;
+  var ideaPrinter = require('./idea-printer').create("Zebra", printerName, "template.zpl") ;
+  var camera = require('raspicam')({mode : "timelapse", timelapse : "50", w : 300, h : 200, e : 'jpg', output : cameraPath}) ;
 
+  // manage printing when a new idea is received
   boxServer.onNewIdea(function(idea) {
-    fs.readFile('template.zpl', function read(err, data) {
-      if (!err) {
-        printer.printDirect({
-          data:new Buffer(data).toString().replace(/\{\{idea\}\}/, idea),
-          printer:printerName,
-          type: "RAW",
-          success:function(){
-            console.log("printed new idea : "+ idea);
-          }, 
-          error:function(err){console.log(err);}
-        });
-      }
-    }) ;
+    ideaPrinter.print(idea) ;
   }) ;
 
+  // restart camera if timeout is reached (~11 days)
+  camera.on("exit", function() {
+    camera.start() ;
+  }) ;
+
+  // start express and socket io + time laps camera
   console.log("Starting innov-box...") ;
   boxServer.start() ;
   videoServer.start() ;
-  console.log("Started\n") ; 
+  var camera_process = camera.start({}) ;
+  console.log("Started\n") ;
 
+  // Manager app closing
   process.on('SIGINT', function () {
     setTimeout(function() { console.log("Could not stop within ten seconds, terminating.") ; process.exit(-1) ; }, 10000 ) ;
     console.log("Stopping innov-box...") ;
+    camera.stop(camera_process) ;
     videoServer.stop() ;
     boxServer.stop(function () {
       console.log("Stopped. Bye !") ;
