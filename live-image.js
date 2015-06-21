@@ -22,7 +22,9 @@ LiveImage.prototype = {
           fs.readFile(path, function(err, data) {
             if(!err) {
               var encodedData = new Buffer(data).toString('base64') ;
-              thisServer.emit(name, 'data:image/jpg;base64,' + encodedData) ;
+              if(encodedData.length > 10) { // why not !
+                thisServer.emit(name, 'data:image/jpg;base64,' + encodedData) ;
+              }
             }
           }) ;
         }

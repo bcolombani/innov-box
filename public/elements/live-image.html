@@ -1,8 +1,31 @@
 <script src='../bower_components/socket.io-client/socket.io.js'></script>
 
 <dom-module id='live-image'>
+  <style>
+    :host {
+      height: 0px ;
+    }
+    .live-img {
+      transform: scale(0.25) skewY(-23.5deg);
+      top: -296px;
+      left: 75px;
+      position: relative;
+      float: left;
+      box-shadow: 0 0 10px 10px #888;
+      border: 2px solid #FAFAFA;
+    }
+    img:hover {
+      position : absolute ;
+      transform: translate(-50%, -50%) scale(2);
+      box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.4) ;
+      border : none ;
+      top : 50%;
+      left: 50%;
+      z-index: 999;
+    }
+  </style>
   <template>
-    <img src='{{imageData}}'></src>
+    <img src='' id="img" width="320" height="240" class="live-img"></src>
   </template>
 </dom-module>
 
@@ -19,7 +42,7 @@
       this.socket = io(location.protocol + '//' + window.location.hostname + ':' + this.port + this.url) ;
       var thisLiveImage = this ;
       this.socket.on(this.eventName, function(data) {
-        thisLiveImage.imageData = data ;
+        thisLiveImage.$.img.src = data ;
       }) ;
     }
   }) ;
