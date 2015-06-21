@@ -52,7 +52,7 @@ BoxServer.prototype = {
   }
 } ;
 
-exports.create = function(port, file, publicParams) {
-  return new BoxServer(port, file, publicParams) ;
+exports.create = function(port, file, logPath, publicParams) {
+  return new BoxServer(port, file, logPath, publicParams) ;
 }
 
