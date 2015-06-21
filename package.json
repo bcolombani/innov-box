@@ -1,5 +1,5 @@
 {
-  "name": "innovbox",
+  "name": "innov-box",
   "version": "0.5.0",
   "description": "KISS virtual idea box for corporate innovation suggestions",
   "author": {
@@ -8,14 +8,13 @@
   },
   "repository": "bcolombani/innov-box",
   "license": "MIT",
-  "main": "index.js",
-  "bin": "innov-box.js",
-  "files": [
-    "index.js"
-  ],
+  "main": "./index.js",
+  "bin": {
+    "innov-box" : "./innov-box.js"
+  },
   "keywords": [
-    "innovbox",
-    ""
+    "idea",
+    "suggestion"
   ],
   "dependencies": {
     "body-parser": "^1.12.4",
@@ -39,5 +38,8 @@
   },
   "scripts": {
     "test": "grunt"
+  },
+  "engines" : {
+    "node" : "*"
   }
 }

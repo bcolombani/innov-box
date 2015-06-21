@@ -1,5 +1,5 @@
-module.exports = function(serverPort, socketPort, dbPath, cameraPath, printerName) {
-  var boxServer = require('./box-server').create(serverPort, dbPath, { socketPort : socketPort }) ;
+module.exports = function(serverPort, socketPort, dbPath, cameraPath, printerName, logPath) {
+  var boxServer = require('./box-server').create(serverPort, dbPath, logPath, { socketPort : socketPort }) ;
   var videoServer = require('./live-image').create(socketPort, [ { path : cameraPath, name : 'box-view' } ]) ;
   var ideaPrinter = require('./idea-printer').create("Zebra", printerName, "template.zpl") ;
   var camera = require('raspicam')({mode : "timelapse", timelapse : "50", w : 300, h : 200, e : 'jpg', output : cameraPath}) ;

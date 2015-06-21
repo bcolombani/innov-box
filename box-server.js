@@ -3,7 +3,7 @@ var fs = require('fs') ;
 var enableDestroy = require('server-destroy') ;
 var express = require('express') ;
 
-var BoxServer = function(port, filePath, publicParams) {
+var BoxServer = function(port, filePath, logPath, publicParams) {
   this.port = port ;
   this.newIdeaCallback = function(idea) {} ;
 
@@ -32,7 +32,7 @@ var BoxServer = function(port, filePath, publicParams) {
 
   // Adds json-server router, a simple logger and the static resource for the front end
   this.server.use('/api', router) ;
-  this.server.use(logger('combined', {stream : fs.createWriteStream(__dirname + '/access.log', {flags: 'a'})})) ;
+  this.server.use(logger('combined', {stream : fs.createWriteStream(logPath, {flags: 'a'})})) ;
   this.server.use(express.static(__dirname + '/public')) ;
 } ;
 

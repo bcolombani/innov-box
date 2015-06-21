@@ -31,13 +31,14 @@ sudo apt-get install libcups2-dev
 ## Usage
 
 ```sh
-innov-box <web-port> <socket-port> <json-database-path> <time-lapse-image-path> <printer-cups-name>
+innov-box <web-port> <socket-port> <json-database-path> <time-lapse-image-path> <printer-cups-name> <log-file-path>
 ```
 * web-port : local port on which the services and static resources are served
 * socket-port : local port of the socket.io server
 * json-database-path : path to the json file used as a database with lowdb
 * time-lapse-image-path : path where the time lapse image is written
 * printer-cups-name : name of the Zebra printer in CUPS configuration
+* log-file-path : path to the log file of the http server (combined logs)
 
 ## License
 
