@@ -1,11 +1,57 @@
 <link rel='import' href='../bower_components/iron-ajax/iron-ajax.html'>
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel='import' href='ideacard-form.html'>
 <link rel='import' href='live-image.html'>
 
 <dom-module id='innov-box'>
+  <style>
+  :host {
+      /* layout properties for the host element */
+      @apply(--layout-vertical);
+      @apply(--layout-center);
+    }
+    .content {
+      margin : 20px ;
+    }
+    .box-top {
+      z-index : 0;
+      position : absolute ;
+      float : left ;
+      width : 400px ;
+    }
+    .box {
+      left : -400px ;
+      z-index: 10 ;
+      width : 400px ;
+    }
+    .bird {
+      position : relative ;
+      float : left ;
+      left : -200px ;
+      top : 20px ;
+      width: 150px ;
+      -webkit-filter: drop-shadow(0px 2px 2px #888) ;
+      filter:         drop-shadow(0px 2px 2px #888) ; 
+    }
+    .bubles {
+      position : relative ;
+      float : left ;
+      left : -235px ;
+      top : 60px ;
+      width: 100px ;
+      -webkit-filter: drop-shadow(0px 2px 2px #888) ;
+      filter:         drop-shadow(0px 2px 2px #888) ; 
+    }
+  </style>
   <template>
-    <div class='content' layout fit>
+    <div class='content'>
+      <img class="bird" src="/img/bird.png"/>
       <ideacard-form></ideacard-form>
+      <div>
+        <img class="box-top" src="/img/box-top.png"/>
+        <img class="box" src="/img/box.png"/>
+        
+      </div>
     </div>
     <iron-ajax
       id='paramAjax'

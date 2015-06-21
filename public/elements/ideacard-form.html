@@ -5,30 +5,80 @@
 <link rel='import' href='../bower_components/iron-icons/iron-icons.html'>
 <link rel='import' href='../bower_components/paper-dialog/paper-dialog.html'>
 <link rel="import" href='../bower_components/neon-animation/animations/scale-up-animation.html'>
+<link rel="import" href='../bower_components/neon-animation/animations/scale-down-animation.html'>
 <link rel="import" href='../bower_components/neon-animation/animations/fade-out-animation.html'>
+<link rel="import" href="../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="enveloppe-animation.html">
 
 <dom-module id='ideacard-form'>
   <style>
     :host {
+      display: block;
+      height : 200px ;
+      width: 400px ;
     }
+
+    paper-button {
+      cursor: pointer ;
+    }
+
     paper-fab {
       position : absolute ;
       top : -28px ;
-      right : 16px ; 
+      right : 16px ;
+      background-color: #2C5697 ;
+      z-index: 999 ;
     }
     paper-material {
       height : 200px ;
-      padding-left : 16px ;
-      padding-right : 16px ;
+      background-color: #FAFAFA
+    }
+    .textarea-container {
+      position : absolute ; 
+      width : 368px ;
+      clear : both ;
+      margin-left : 16px ;
+      margin-right : 16px ;
+    }
+    .enveloppe-bottom {
+      display : none ;
+      z-index: 10 ;
+      position : absolute ;
+      top : 67px ;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 200px 133px 200px;
+      border-color: transparent transparent #FAFAFA transparent;
+      -webkit-filter: drop-shadow(0px 2px 2px #888) ;
+      filter:         drop-shadow(0px 2px 2px #888) ; 
+    }
+    .enveloppe-top {
+      display : none ;
+      z-index: 20 ;
+      position : absolute ;
+      top : 2px ;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 133px 200px 0px 200px;
+      border-color: #FAFAFA transparent transparent transparent;
+      -webkit-filter: drop-shadow(0px 0px 1px #888) ;
+      filter:         drop-shadow(0px 0px 1px #888) ; 
     }
   </style>
   <template>
-    <div layout vertical>
-      <paper-material elevation='2'>
-        <paper-textarea id='ideaText' label='Ecrivez votre id&eacute;e'></paper-textarea>
+    <div layout vertical center>
+      <paper-material elevation='2' id="enveloppe">
+        
+        <div class="textarea-container" id="enveloppeContent">
+          <paper-textarea id='ideaText' label='Ecrivez votre id&eacute;e'></paper-textarea>
+        </div>
+        <div class='enveloppe-top' id='enveloppeTop'></div>
+        <div class='enveloppe-bottom' id='enveloppeBottom'></div>
       </paper-material>
       <div layout horizontal end end-jusitied fit style='position : relative;'>
-        <paper-fab icon='send' on-click='goClicked'></paper-fab>
+        <paper-fab icon='send' on-click='goClicked' id="fab"></paper-fab>
       </div>
     </div>
     <iron-ajax
@@ -45,7 +95,7 @@
         Votre id&eacute;e a bien &eacute;t&eacute; envoy&eacute;e
       </paper-dialog-scrollable>
       <div class="buttons">
-        <paper-button dialog-confirm>Poster une autre id&eacute;e</paper-button>
+        <paper-button dialog-confirm on-click="newCard">Poster une autre id&eacute;e</paper-button>
       </div>
     </paper-dialog>
   </template>
@@ -53,16 +103,51 @@
 <script>
   Polymer( {
     is : 'ideacard-form',
+    behaviors: [
+      Polymer.NeonAnimationRunnerBehavior
+    ],
     properties : {
-      ajaxBody : String
+      ajaxBody : String,
+      animationConfig: {
+        value: function() {
+          return {
+              name: 'enveloppe-animation',
+              axis : 'y',
+              node: this,
+              timing : {
+                duration : 10000,
+                fill : 'forwards'
+              }
+            } ;
+          
+        }
+      }
+    },
+    listeners: {
+      'neon-animation-finish': 'onAnimationFinish'
     },
     goClicked: function(e) {
       this.ajaxBody = 'text=' + this.$.ideaText.value ;
       this.$.postIdeaAjax.generateRequest() ;
+
     },
     onIdeaPostedResponse : function(e) {
       this.$.ideaText.value = '' ;
+      this.$.enveloppeTop.style.display = 'block';
+      this.$.enveloppeBottom.style.display = 'block';
+      this.$.fab.style.display = 'none';
+      this.playAnimation();
+    },
+    onAnimationFinish : function() {
+      this.$.enveloppe.style.display = "none" ;
       this.$.dialog.open() ;
+    },
+    newCard : function() {
+      this.$.enveloppeTop.style.display = 'none';
+      this.$.enveloppeBottom.style.display = 'none';
+      this.$.enveloppeContent.style.display = "block" ;
+      this.$.fab.style.display = 'block';
+      this.$.enveloppe.style.display = "block" ;
     }
   }) ;
 </script>

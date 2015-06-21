@@ -1,0 +1,81 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animation-behavior.html">
+<link rel="import" href="../bower_components/neon-animation/web-animations.html">
+
+<script>
+
+  Polymer({
+
+    is: 'enveloppe-animation',
+
+    behaviors: [
+      Polymer.NeonAnimationBehavior
+    ],
+
+    configure: function(config) {
+      var effects = [] ;
+
+      this.setPrefixedProperty(config.node.$.enveloppeTop, 'transformOrigin', '0% 0%');
+      effects.push(new KeyframeEffect(
+        config.node.$.enveloppeTop, 
+        [
+          {'transform': 'scaleY(0)'},
+          {'transform': 'scaleY(1)'}
+        ], 
+        {delay : 0, duration : 200, fill : 'forwards'  }
+      ));
+
+      this.setPrefixedProperty(config.node.$.enveloppeBottom, 'transformOrigin', '0% 100%');
+      effects.push(new KeyframeEffect(
+        config.node.$.enveloppeBottom, 
+        [
+          {'transform': 'scaleY(0)'},
+          {'transform': 'scaleY(1)'}
+        ], 
+        {delay : 0, duration : 200, fill : 'forwards'  }
+      ));
+
+      effects.push(new KeyframeEffect(
+        config.node.$.enveloppeContent, 
+        [
+          {'opacity': '1'},
+          {'opacity': '0'}
+        ], 
+        {delay : 0, duration : 200, fill : 'forwards' }
+      ));
+
+      effects.push(new KeyframeEffect(
+        config.node, 
+        [
+          {'transform': 'none'},
+          {'transform': 'perspective(1000px) rotateY(45deg) scale(0.3)'}
+        ], 
+        {delay : 300, duration : 200, fill : 'forwards'  }
+      ));
+
+      effects.push(new KeyframeEffect(
+        config.node.$.enveloppe, 
+        [
+          {'top': '0px'},
+          {'top': '1000px'}
+        ], 
+        {delay : 600, duration : 400, fill : 'forwards'  }
+      ));
+
+      effects.push(new KeyframeEffect(
+        config.node.$.enveloppe, 
+        [
+          {'transform': 'skewY(0deg)'},
+          {'transform': 'skewY(-9deg)'}
+        ], 
+        {delay : 600, duration : 400, fill : 'forwards'  }
+      ));
+
+      this._effect = new GroupEffect(effects);
+
+      return this._effect;
+    }
+
+  });
+
+</script>
