@@ -33,14 +33,28 @@
       -webkit-filter: drop-shadow(0px 2px 2px #888) ;
       filter:         drop-shadow(0px 2px 2px #888) ; 
     }
-    .bubles {
-      position : relative ;
+    .live-img {
+      height: 0px ;
+    }
+    .live-img::shadow img {
+      transform: scale(0.25) skewY(-23.5deg);
+      top: -296px;
+      left: 75px;
+      position: relative;
+      display : block ;
+      float: left;
+      box-shadow: 0 0 10px 10px #888;
+      border: 2px solid #FAFAFA;
+    }
+    .live-img::shadow img:hover {
+      position : absolute ;
       float : left ;
-      left : -235px ;
-      top : 60px ;
-      width: 100px ;
-      -webkit-filter: drop-shadow(0px 2px 2px #888) ;
-      filter:         drop-shadow(0px 2px 2px #888) ; 
+      transform: translate(-50%, -50%) scale(2);
+      box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.4) ;
+      border : none ;
+      top : 50%;
+      left: 50%;
+      z-index: 999;
     }
   </style>
   <template>
@@ -58,25 +72,19 @@
       url="/params"
       method="GET"
       handle-as="json"
-      on-response="onParamsReceived">
+      last-response="{{paramsResponse}}"
+      >
     </iron-ajax>
+    <live-image class="live-img" event-name='box-view' url='' port="{{paramsResponse.socketPort}}"></live-image>
   </template>
 </dom-module>
 <script>
   Polymer( {
     is : 'innov-box',
     properties : {
-
     },
     attached : function() {
       this.$.paramAjax.generateRequest() ;
     },
-    onParamsReceived : function(event) {
-      liveImage = document.createElement("live-image") ;
-      liveImage.setAttribute("url", "/") ;
-      liveImage.setAttribute("port", event.detail.response.socketPort) ; 
-      liveImage.setAttribute("event-name", "box-view") ;
-      this.$.paramAjax.parentNode.appendChild(liveImage) ;
-    }
   }) ;
 </script>
